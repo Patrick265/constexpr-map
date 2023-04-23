@@ -45,7 +45,7 @@ class const_map
             return this->at(key);
         }
 
-        constexpr bool assign(const Key& key, const Value& value)
+        [[nodiscard]] constexpr bool assign(const Key& key, const Value& value)
         {
             for(auto& entry : m_data)
             {
@@ -55,6 +55,31 @@ class const_map
                     return true;
                 }
             }
+            return false;
+        }
+
+        [[nodiscard]] constexpr bool empty() const
+        {
+            return count() == 0;
+        }
+
+        [[nodiscard]] constexpr void erase(const Key& key)
+        {
+            for (auto& entry : m_data)
+                if (entry.key == key)
+                    entry.value = 0;
+        }
+
+        [[nodiscard]] constexpr std::size_t count() const
+        {
+            return Size;
+        }
+
+        [[nodiscard]] constexpr bool contains(const Key& key) const
+        {
+            for (auto& entry : m_data)
+                if (entry.key == key)
+                    return true;
             return false;
         }
 

@@ -24,27 +24,27 @@ constexpr auto mapFiller()
     return custom::const_map<S, K, V>{content};
 }
 
-void constMapValidator()
+constexpr void constMapValidator()
 {
     constexpr std::size_t size = 100;
     std::printf("%s\n", __TIME__);
     constexpr custom::const_map<size, uint32_t, int32_t> cmap = mapFiller<size, uint32_t, int32_t>();
 
 
-    constexpr int32_t value_at_0 = cmap.at(0).value_or(-1);
-    constexpr int32_t value_at_1 = cmap.at(1).value_or(-1);
+    constexpr int32_t valueAt0 = cmap.at(0).value_or(-1);
+    constexpr int32_t valueAt1 = cmap.at(1).value_or(-1);
 
-    constexpr int32_t value_bracket_0 = cmap[0].value_or(-1);
-    constexpr int32_t value_bracket_1 = cmap[1].value_or(-1);
+    constexpr int32_t valueBracket0 = cmap[0].value_or(-1);
+    constexpr int32_t valueBracket1 = cmap[1].value_or(-1);
 
-    constexpr auto index = size + 1;
-    constexpr int32_t valNotFound = cmap[index].value_or(-1);
+    constexpr std::size_t index       = size + 1;
+    constexpr int32_t     valNotFound = cmap[index].value_or(-1);
 
-    std::printf("K: .at(%i),\tV: %i\n", 0, value_at_0);
-    std::printf("K: .at(%i),\tV: %i\n", 1, value_at_1);
-    std::printf("K: [%i],\t\tV: %i\n", 0, value_bracket_0);
-    std::printf("K: [%i],\t\tV: %i\n", 1, value_bracket_1);
-    std::printf("K: [%lu],\tV: %i\n", index, valNotFound);
+    std::printf("K: .at(%i),\tV: %i\n", 0,     valueAt0);
+    std::printf("K: .at(%i),\tV: %i\n", 1,     valueAt1);
+    std::printf("K: [%i],\t\tV: %i\n",  0,     valueBracket0);
+    std::printf("K: [%i],\t\tV: %i\n",  1,     valueBracket1);
+    std::printf("K: [%i],\tV: %i\n",    index, valNotFound);
 
     std::for_each(cmap.cbegin(), cmap.cend(), [](const auto kv) constexpr -> void {
         std::printf("Key -> %i, Value -> %i\n", kv.key, kv.value);
@@ -60,6 +60,6 @@ int main()
     const steady_clock::time_point end = std::chrono::steady_clock::now();
     const auto ms = duration_cast<microseconds>(end - begin).count();
 
-    std::printf("%lu ms\n", ms);
+    std::printf("%i ms\n", ms);
     return 0;
 }
